@@ -72,7 +72,7 @@ $(document).ready(function(){
             $.ajax({
                 type: 'POST',
                 //Não esqueça de verificar o Ip de sua máquina
-                url: "http://192.168.0.14/servidor/controller/controllerTarefas.php?ctrl=salvar",
+                url: "http://192.168.0.8/servidor/controller/controllerTarefas.php?ctrl=salvar",
                 async: true,
                 dataType: 'json',
                 data:{
@@ -121,7 +121,7 @@ function ExibirTarefas(){
     //Comucicação com o Servidor
     $.ajax({
         type: 'GET',
-        url: 'http://192.168.0.14/servidor/controller/controllerTarefas.php?ctrl=exibir',
+        url: 'http://192.168.0.8/servidor/controller/controllerTarefas.php?ctrl=exibir',
         
         //Se a conexão for bem sucedida
         success: function(data){
@@ -141,3 +141,80 @@ function ExibirTarefas(){
 
 //Exibir Tarefas
 ExibirTarefas();
+
+//Alterar Tarefa
+function alterarTarefa(arr){
+    //Alerta Formulario para editar os dados da tarefa
+    Swal.fire({
+        cancelButtonText: 'Cancelar',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Salvar',
+        html: 
+        '<h3>Editar Tarefas</h3><br>'+
+        '<input type="text" class="form-control" id="tituloEdit" value="'+arr[1]+'"><br>'+
+        '<textarea class="form-control" id="descricaoEdit" rows="3">'+arr[2]+'</textarea>',
+      }).then((result) => {
+
+        if (result.isConfirmed) {
+        
+          //Verifica campos vazios
+          if ($("#tituloEdit").val() == "" || $("#descricaoEdit").val() == "") {
+              Swal.fire({ 
+                  icon: 'info',
+                  text: 'Precisa preencher os campos!', 
+              }).then((result) => {
+                    alterarTarefa(arr);
+              });
+          }else{
+                //Armazena os dados editados nas variáveis
+                var id = arr[0];
+                var titulo = $("#tituloEdit").val();
+                var descricao = $("#descricaoEdit").val();
+                
+                //Pergunta se quer salvar alterações
+                Swal.fire({
+                    icon: 'question',
+                    text: 'Salvar alterações?',
+                    cancelButtonText: 'Não',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Sim',
+                }).then((result) =>{
+                    if (result.isConfirmed) {
+                        
+                        //Comucicação com o Servidor
+                        $.ajax({
+                            type: 'POST',
+                            url: 'http://192.168.0.14/servidor/controller/controllerTarefas.php?ctrl=alterar',
+                            data: {
+                                id : id,
+                                titulo : titulo,
+                                descricao : descricao,
+                            },
+                            //Se a conexão for bem sucedida
+                            success: function(data){
+                                Swal.fire({
+                                    icon: 'success',
+                                    text: 'Alteração Salva!'
+                                });
+
+                                ExibirTarefas();
+                            },
+                            //Se a conexão não for bem sucedida
+                            error: function(data){
+                                Swal.fire({
+                                    icon: 'error',
+                                    text: 'Erro ao tentar conexão!'
+                                });
+                            }
+                        });
+                    }
+                });
+              
+          }
+        }
+      });
+}
