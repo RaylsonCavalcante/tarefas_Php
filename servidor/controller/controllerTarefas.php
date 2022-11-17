@@ -39,4 +39,16 @@
 
         $tarefas->exibir($connect);
     }
+
+    //Alterar Tarefa
+    if($ctrl == 'alterar'){
+
+        //Pega o (id),(titulo),(descricao)
+        $id = $_POST['id'];
+        $titulo = $_POST['titulo'];
+        $descricao = $_POST['descricao'];
+
+        //Manda para ser alterado
+        $tarefas->alterar($id, $titulo, $descricao, $connect);
+    }
 ?>
