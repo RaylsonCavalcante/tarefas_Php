@@ -33,7 +33,8 @@ Na criação do sistema utilizei as seguintes linguagens e ferramentas:
 
 <h3>RODAR:</h3>
 Você precisará ter o Cordova instalado em sua máquina.<br>
-Com os comandos Cordova, você conseguirá depurar o App e vai poder testar em seu smartphone.<br><br>Você precisa copiar a pasta "servidor" para dentro do "htdocs" e também contém o arquivo "tarefas.sql", importe-o em seu banco.
+Com os comandos Cordova, você conseguirá depurar o App e vai poder testar em seu smartphone.<br><br>Você precisa copiar a pasta "servidor" para dentro do "htdocs" e também contém o arquivo "tarefas.sql", importe-o em seu banco.<br>
+Lembrando que você deve verificar o ip da sua máquina para colar na url.
 
 <h3>PRINTS</h3>
 <div style="display: flex;">
