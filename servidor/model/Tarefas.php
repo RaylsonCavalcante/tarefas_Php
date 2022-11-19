@@ -82,5 +82,18 @@
             
             return true;
         }
+
+        //Excluir tarefa
+        public function excluir($id, $connect){
+            
+            //Condição se for excluído ou não
+            if($sql = mysqli_query($connect, "DELETE FROM tarefas WHERE id = '$id' ")){
+
+                echo "Sim";
+            }else{
+                echo "Não";
+            }
+
+        }
     }
 ?>

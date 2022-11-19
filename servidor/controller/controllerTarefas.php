@@ -51,4 +51,14 @@
         //Manda para ser alterado
         $tarefas->alterar($id, $titulo, $descricao, $connect);
     }
+
+    //Excluir Tarefas
+    if($ctrl == 'excluir'){
+        
+        //Pega o (id)
+        $id = $_POST['id'];
+
+        //Manda para ser Exluído
+        $tarefas->excluir($id, $connect);
+    }
 ?>

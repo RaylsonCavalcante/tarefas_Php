@@ -72,7 +72,7 @@ $(document).ready(function(){
             $.ajax({
                 type: 'POST',
                 //Não esqueça de verificar o Ip de sua máquina
-                url: "http://192.168.0.8/servidor/controller/controllerTarefas.php?ctrl=salvar",
+                url: "http://192.168.0.5/servidor/controller/controllerTarefas.php?ctrl=salvar",
                 async: true,
                 dataType: 'json',
                 data:{
@@ -121,7 +121,7 @@ function ExibirTarefas(){
     //Comucicação com o Servidor
     $.ajax({
         type: 'GET',
-        url: 'http://192.168.0.8/servidor/controller/controllerTarefas.php?ctrl=exibir',
+        url: 'http://192.168.0.5/servidor/controller/controllerTarefas.php?ctrl=exibir',
         
         //Se a conexão for bem sucedida
         success: function(data){
@@ -188,7 +188,7 @@ function alterarTarefa(arr){
                         //Comucicação com o Servidor
                         $.ajax({
                             type: 'POST',
-                            url: 'http://192.168.0.14/servidor/controller/controllerTarefas.php?ctrl=alterar',
+                            url: 'http://192.168.0.5/servidor/controller/controllerTarefas.php?ctrl=alterar',
                             data: {
                                 id : id,
                                 titulo : titulo,
@@ -217,4 +217,55 @@ function alterarTarefa(arr){
           }
         }
       });
+}
+
+//Exluir Tarefa
+function excluirTarefa(id){
+
+    //Alerta de Exclusão
+    Swal.fire({
+        text: "Excluir Tarefa?",
+        icon: 'question',
+        cancelButtonText: 'Não',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Sim'
+      }).then((result) => {
+        if (result.value) {
+            //Comucicação com o Servidor
+            $.ajax({
+                type: 'POST',
+                url: 'http://192.168.0.5/servidor/controller/controllerTarefas.php?ctrl=excluir',
+                data:{
+                    id : id,
+                },
+                //Se a conexão for bem sucedida
+                success: function(data){
+                    
+                    //(Condição) Veirfica se a ação foi ou não realizada com sucesso
+                    if(data === 'Sim'){
+                        Swal.fire({
+                            icon: 'success',
+                            text: 'Tarefa Excluída.',
+                        });
+                        
+                        ExibirTarefas();
+                    }else{
+                        Swal.fire({
+                            icon: 'info',
+                            text: 'Erro ao tentar Excluir! Tente novamente.'
+                        });
+                    }
+                },
+                //Se a conexão não for bem sucedida
+                error: function(data){
+                    Swal.fire({
+                        icon: 'error',
+                        text: 'Erro ao tentar Conexão!',
+                    });
+                }
+            });
+        }
+    });
 }
